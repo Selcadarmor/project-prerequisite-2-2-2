@@ -2,8 +2,8 @@ package web.service;
 
 import org.springframework.stereotype.Service;
 import web.model.Car;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -18,9 +18,13 @@ public class CarService {
         cars.add(new Car("Camry", "Toyota", 2020));
     }
     public List<Car> getCars(int count) {
-        if (count >= 5) {
-            return cars;
+        if (count <= 0) {
+            return Collections.emptyList();
         }
-        return cars.subList(0, Math.min(count, cars.size()));
+        int safeCount = Math.min(count, cars.size());
+        if (safeCount < 0 || safeCount > cars.size()) {
+            return Collections.emptyList(); 
+        }
+        return new ArrayList<>(cars.subList(0, safeCount));
     }
 }
